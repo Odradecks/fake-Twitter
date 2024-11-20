@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CustomDatePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <!-- 设置按钮文本颜色 -->
+        <item name="colorAccent">#000000</item> <!-- 这里设置你希望的颜色 -->
+    </style>
+
+    <style name="RoundAvatar">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>  <!-- 设置头像为圆形 -->
+    </style>
+
+
+
+
+</resources>

@@ -1,0 +1,12 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Twitter" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#FFFFFF</item>
+        <!-- 设置状态栏颜色 -->
+        <item name="android:statusBarColor">#FFFFFF</item>
+        <!-- 设置状态栏图标和文字的颜色为深色（针对 Android 6.0 及以上版本） -->
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="Theme.Twitter" parent="Base.Theme.Twitter" />
+</resources>
