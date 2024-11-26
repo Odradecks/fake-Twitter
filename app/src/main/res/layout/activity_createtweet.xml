@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Top bar with Cancel and Post button -->
+    <RelativeLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        tools:ignore="MissingConstraints">
+
+        <!-- Cancel button (left) -->
+        <TextView
+            android:id="@+id/cancelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Cancel"
+            android:layout_marginLeft="24dp"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true" />
+
+        <!-- Post button (right) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/postButton"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:text="Post"
+            android:layout_marginTop="16dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="24dp"
+            android:backgroundTint="#FF0000"
+            android:textColor="#FFFFFF"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
+    <!-- User Avatar -->
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/userAvatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/default_avatar"
+        app:layout_constraintTop_toBottomOf="@id/buttons"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp" />
+
+    <!-- EditText for tweet content -->
+    <EditText
+        android:id="@+id/tweetEditText"
+        android:layout_width="0dp"
+        android:layout_height="160dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="24dp"
+        android:hint="What's happening?"
+        android:inputType="textMultiLine"
+        android:maxLines="5"
+        android:minLines="3"
+        android:padding="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userAvatar" />
+
+    <!-- Bottom bar with Add Image button -->
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:background="#EEEEEE"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- Add Image Button -->
+        <ImageView
+            android:id="@+id/addImageButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_image"
+            android:contentDescription="Add Image"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
+            android:layout_gravity="center_vertical" />
+
+        <!-- Placeholder for additional buttons -->
+        <!-- Add more buttons here if needed -->
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

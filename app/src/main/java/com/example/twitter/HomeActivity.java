@@ -43,7 +43,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView forYouText;
     private TextView followingText;
 
-    private ImageView avatarImageView; // 头像 ImageView
+    private ImageView avatarImageView; // （自己的）头像 ImageView
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +89,24 @@ public class HomeActivity extends AppCompatActivity {
             // 切换到 "Following" tab
             switchTab(false);
         });
+
+        ImageView fab = findViewById(R.id.fab_create_tweet);
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, CreateTweetActivity.class);
+            startActivity(intent);
+        });
+
     }
+
+    /*@Override
+    protected void onResume() {
+        super.onResume();
+
+        // 切换回"For you" Tab时重新加载推文
+        tweetList.clear();
+        tweetList.addAll(fetchTweetsFromDatabase());
+        tweetAdapter.notifyDataSetChanged();
+    }*/
 
     private void fetchUserAvatar() {
         // 获取当前用户信息
@@ -109,6 +126,13 @@ public class HomeActivity extends AppCompatActivity {
                     .addOnFailureListener(e -> {
                         Log.e("FirestoreError", "Error getting collections: ", e);
                     });
+
+            avatarImageView.setOnClickListener(v -> {
+                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+                intent.putExtra("UID", currentUserId); // 传递当前用户 UID
+                startActivity(intent);
+            });
+
 
             // 从 Firestore 获取用户信息
             db.collection("User").document(userId)
@@ -193,7 +217,7 @@ public class HomeActivity extends AppCompatActivity {
                     Long view_count = tweetDoc.getLong("view_count");
                     Long retweet_count = tweetDoc.getLong("retweet_count");
 
-                    renderTweetItem(UID, "testTweetID", content, image_url, timestamp, comment_count, like_count, view_count, retweet_count);  // 用来渲染一张包含用户信息的tweet.
+                    renderTweetItem(UID, tweet_id, content, image_url, timestamp, comment_count, like_count, view_count, retweet_count);  // 用来渲染一张包含用户信息的tweet.
                 });
     }
     private void fetchFollowingList() {  // get current user's following list first
@@ -262,9 +286,22 @@ public class HomeActivity extends AppCompatActivity {
                             username, email, avatar_url, comment_count, retweet_count, like_count, view_count);
                     tweetList.add(tweet);
 
+                    tweetAdapter.setOnAvatarClickListener((clickedUID) -> {  //
+                        Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+                        intent.putExtra("UID", clickedUID);  // 传递 UID
+                        startActivity(intent);
+                    });
                     // 最后一次性刷新 RecyclerView
                     tweetAdapter.notifyDataSetChanged();
                 });
     }
 
+    public void onAvatarClick(String clickedUID) {
+        // 在这里处理头像点击事件，例如跳转到用户详情页
+        Log.d("AvatarClick", "Clicked UID: " + clickedUID);
+        // 你可以根据点击的 UID 做相应的操作，比如跳转到用户主页
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra("UID", clickedUID);
+        startActivity(intent);
+    }
 }

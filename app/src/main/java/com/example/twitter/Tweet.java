@@ -1,5 +1,7 @@
 package com.example.twitter;
 
+import com.google.firebase.Timestamp;
+
 public class Tweet {
     private String tweet_id;
     private String content;
@@ -14,6 +16,9 @@ public class Tweet {
     private Long like_count;
     private Long view_count;
 
+    private boolean isLiked;
+    private boolean isRetweeted;
+    private boolean isCommented;
     // 默认构造函数
     public Tweet() {}
 
@@ -35,6 +40,14 @@ public class Tweet {
         this.view_count = view_count;
     }
 
+    public Tweet(String userId, String content, String imageUrl, Timestamp timestamp) {
+        this.tweet_id = null; // Will be set during saving
+        this.UID = userId;
+        this.content = content;
+        this.image_url = imageUrl;
+        this.timestamp = timestamp;
+    }
+
 
     // Getter and Setter methods for each field
     public String getTweetId() {
@@ -45,6 +58,13 @@ public class Tweet {
         this.tweet_id = tweet_id;
     }
 
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
+    }
     public String getContent() {
         return content;
     }
@@ -59,14 +79,6 @@ public class Tweet {
 
     public void setImageUrl(String image_url) {
         this.image_url = image_url;
-    }
-
-    public String getUID() {
-        return UID;
-    }
-
-    public void setUID(String UID) {
-        this.UID = UID;
     }
 
     public com.google.firebase.Timestamp getTimestamp() {
@@ -131,5 +143,42 @@ public class Tweet {
 
     public void setViewCount(Long view_count) {
         this.view_count = view_count;
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
+    }
+
+    public boolean isRetweeted() {
+        return isRetweeted;
+    }
+
+    public void setRetweeted(boolean retweeted) {
+        isRetweeted = retweeted;
+    }
+
+    public boolean isCommented() {
+        return isCommented;
+    }
+
+    public void setCommented(boolean commented) {
+        isCommented = commented;
+    }
+    public void updateCount(String field, long newCount) {
+        switch (field) {
+            case "like_count":
+                this.like_count = newCount;
+                break;
+            case "comment_count":
+                this.comment_count = newCount;
+                break;
+            case "retweet_count":
+                this.retweet_count = newCount;
+                break;
+        }
     }
 }

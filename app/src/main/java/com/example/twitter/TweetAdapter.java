@@ -2,6 +2,7 @@ package com.example.twitter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -21,6 +23,16 @@ import java.util.Locale;
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHolder> {
     private final Context context;
     private final List<Tweet> tweetList;
+    private OnAvatarClickListener onAvatarClickListener;
+
+    // 定义接口，要点击tweet_item的头像就可以获得该用户的UID
+    public interface OnAvatarClickListener {
+        void onAvatarClick(String clickedUID);  // 接收点击的用户 UID
+    }
+
+    public void setOnAvatarClickListener(OnAvatarClickListener listener) {
+        this.onAvatarClickListener = listener;
+    }
 
     public TweetAdapter(Context context, List<Tweet> tweetList) {  // 构造函数，接受一个Context访问应用内的资源和文件，一个List<Tweet>类型的集合
         this.context = context;
@@ -35,9 +47,29 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TweetViewHolder holder, int position) {  // 在每次RecyclerView香被绑定时调用，负责将数据从tweetList中取出并填充到TweetViewHolder的视图组建中
-        Tweet tweet = tweetList.get(position);
+    public void onBindViewHolder(@NonNull TweetViewHolder holder, int position) {  // 在每次RecyclerView项被绑定时调用，负责将数据从tweetList中取出并填充到TweetViewHolder的视图组建中
+        Tweet tweet = tweetList.get(position);  // 获得对应位置的推文
 
+        // 设置头像点击事件，传递用户 UID
+        holder.userAvatar.setOnClickListener(v -> {
+            if (onAvatarClickListener != null) {
+                String userUID = tweet.getUID(); // 从 tweet 获取用户的 UID
+                onAvatarClickListener.onAvatarClick(userUID); // 调用回调方法传递 UID
+            }
+        });
+
+        holder.itemView.setTag(tweet.getTweetId());
+        holder.itemView.setOnClickListener(v -> {
+            String tweetId = (String) v.getTag();
+            Log.d("TweetClick", "Clicked Tweet ID: " + tweetId);
+
+            // TODO: 执行具体操作，跳转到推文详情页
+            // openTweetDetails(tweetId);
+        });
+
+        String tweet_id = tweet.getTweetId();
+
+        Log.d("TweetClick", "Clicked Tweet ID: " + tweet_id);
         // 加载用户头像
         Picasso.get().load(tweet.getAvatarUrl()).placeholder(R.drawable.default_avatar).into(holder.userAvatar);  // Picasso加载用户头像，placeholder加载默认头像
 
@@ -69,12 +101,84 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
         holder.retweetCounter.setText(String.valueOf(tweet.getRetweetCount()));
         holder.likeCounter.setText(String.valueOf(tweet.getLikeCount()));
         holder.viewCounter.setText(String.valueOf(tweet.getViewCount()));
+
+        setButtonState(holder, tweet);
+
+        // 设置点赞、评论、转发的点击事件
+        holder.likeIcon.setOnClickListener(v -> updateTweetCount(tweet, "like_count"));
+        holder.retweetIcon.setOnClickListener(v -> updateTweetCount(tweet, "retweet_count"));
     }
+
+    private void setButtonState(TweetViewHolder holder, Tweet tweet) {
+        // 设置点赞按钮的状态
+        if (tweet.isLiked()) {
+            holder.likeIcon.setImageResource(R.drawable.ic_liked);
+        } else {
+            holder.likeIcon.setImageResource(R.drawable.ic_like);
+        }
+
+        // 设置转发按钮的状态
+        if (tweet.isRetweeted()) {
+            holder.retweetIcon.setImageResource(R.drawable.ic_retweeted);
+        } else {
+            holder.retweetIcon.setImageResource(R.drawable.ic_retweet);
+        }
+
+    }
+
+    private void updateTweetCount(Tweet tweet, String field) {
+        long currentCount = 0;
+        boolean isLiked = tweet.isLiked();
+        boolean isRetweeted = tweet.isRetweeted();
+        boolean isCommented = tweet.isCommented();
+        // 只能点赞一次或取消，并且要全局共享。能不能设置一个(tweet_id, is_liked)
+        switch (field) {
+            case "like_count":
+                currentCount = tweet.getLikeCount();
+                if (isLiked) {
+                    tweet.setLiked(false);
+                    currentCount--;  // Decrease like count
+                } else {
+                    tweet.setLiked(true);
+                    currentCount++;  // Increase like count
+                }
+                break;
+            case "retweet_count":
+                currentCount = tweet.getRetweetCount();
+                if (isRetweeted) {
+                    tweet.setRetweeted(false);
+                    currentCount--;  // Decrease retweet count
+                } else {
+                    tweet.setRetweeted(true);
+                    currentCount++;  // Increase retweet count
+                }
+                break;
+        }
+
+        // update data in Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        long finalCurrentCount = currentCount;
+        String tweet_id = tweet.getTweetId();  //
+        db.collection("Tweets").document(tweet.getTweetId())
+                .update(field, currentCount)  // 这里直接使用currentCount，不加1
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Tweet ID", tweet_id);
+                    // update local data
+                    tweet.updateCount(field, finalCurrentCount);
+                    notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("TweetAdapter", "Error updating tweet count", e);
+                });
+    }
+
 
     @Override
     public int getItemCount() {
         return tweetList.size();
     }
+
+
 
     public static class TweetViewHolder extends RecyclerView.ViewHolder {  // 一个ViewHolder类，用来存储每一项推文中的控件引用，避免每次绑定时都进行查找
         ImageView userAvatar, tweetImage, commentIcon, retweetIcon, likeIcon, viewIcon, saveIcon, shareIcon;  // 定义控件

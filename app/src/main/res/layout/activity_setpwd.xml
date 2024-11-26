@@ -77,13 +77,13 @@
         android:id="@+id/verifyPasswordField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:drawableEnd="@drawable/hide_password"
+        android:drawablePadding="10dp"
         android:hint="Verify your password"
         android:inputType="textPassword"
         android:minHeight="48dp"
-        android:drawableEnd="@drawable/hide_password"
-        android:drawablePadding="10dp"
-        android:textSize="16sp"
-        android:layout_alignParentEnd="true" />
+        android:textSize="16sp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/nextButton"
