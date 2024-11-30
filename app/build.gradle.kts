@@ -25,6 +25,10 @@ android {
             )
         }
     }
+    packagingOptions {
+        exclude("META-INF/NOTICE.md".toString())
+        exclude("META-INF/LICENSE.md".toString())
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -64,8 +68,10 @@ dependencies {
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
     implementation("androidx.recyclerview:recyclerview:1.3.1")
-
-
+    implementation("org.nanohttpd:nanohttpd:2.3.1")
+    implementation("com.aliyun.dpa:oss-android-sdk:2.9.19")
+    implementation("com.sun.mail:android-mail:1.6.7")
+    implementation("com.sun.mail:android-activation:1.6.7")
 
 
 }

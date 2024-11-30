@@ -32,6 +32,18 @@ public class LoginActivity extends AppCompatActivity {
 
         TextView cancelTextView = findViewById(R.id.cancelTextView);
         cancelTextView.setOnClickListener(v -> finish());
+        TextView forgotPasswordTextView = findViewById(R.id.forgotPassword);
+        forgotPasswordTextView.setOnClickListener(v -> {
+            // 当点击“忘记密码”时，跳转到验证邮箱页面
+            String email = accountField.getText().toString();
+            if (!email.isEmpty()) {
+                Intent intent = new Intent(LoginActivity.this, VerifyEmailActivity.class);
+                intent.putExtra("email", email);  // 传递邮箱信息
+                startActivity(intent);
+            } else {
+                Toast.makeText(LoginActivity.this, "Please enter your email first.", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         nextButton.setOnClickListener(view -> checkAccountExistence());
     }

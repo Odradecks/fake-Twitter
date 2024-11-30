@@ -23,6 +23,7 @@ import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ProfileActivity extends AppCompatActivity {
     private FirebaseFirestore db;
@@ -73,6 +74,14 @@ public class ProfileActivity extends AppCompatActivity {
         // 加载用户信息和推文
         loadUserInfo();
         loadUserTweets();
+
+        // 在 onCreate 方法中设置 EditProfile 按钮的点击事件
+        editProfileButton.setOnClickListener(v -> {
+            // 跳转到 EditProfileActivity
+            Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
+            intent.putExtra("UID", profileUserId);  // 传递 UID
+            startActivity(intent);
+        });
 
         followButton.setOnClickListener(v -> {
             // 执行关注操作
@@ -253,17 +262,20 @@ public class ProfileActivity extends AppCompatActivity {
                             postsTextView.setVisibility(View.VISIBLE);
                         } else {
                             postsTextView.setVisibility(View.GONE);
+
+                            final int totalTweets = tweets.size();
+                            final AtomicInteger loadedTweets = new AtomicInteger(0); // 用于计数加载的 tweets
+
                             for (String tweetId : tweets) {
+                                Log.d("Print tweet ID", tweetId);
                                 db.collection("Tweets").document(tweetId)
                                         .get()
                                         .addOnSuccessListener(tweetSnapshot -> {
                                             if (tweetSnapshot.exists()) {
-                                                // 用户的个人信息也要渲染
-
-                                                // Tweet tweet = tweetSnapshot.toObject(Tweet.class);  // 这里也会直接转换对象，所以会新增一条没有任何信息只有内容的tweet。
                                                 fetchTweetDetails(tweetId);
-                                                // tweetList.add(tweet);
-                                                // tweetAdapter.notifyDataSetChanged();
+                                                if (loadedTweets.incrementAndGet() == totalTweets) {
+                                                    tweetAdapter.notifyDataSetChanged(); // 所有 tweet 加载完成，刷新 UI
+                                                }
                                             }
                                         })
                                         .addOnFailureListener(e -> Log.e("ProfileActivity", "Error loading tweet", e));
@@ -273,6 +285,7 @@ public class ProfileActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> Log.e("ProfileActivity", "Error loading tweets", e));
     }
+
     private void renderTweetItem(String UID, String tweet_id, String content, String image_url, com.google.firebase.Timestamp timestamp, Long comment_count, Long like_count, Long view_count, Long retweet_count) {
         db.collection("User").document(UID)
                 .get()

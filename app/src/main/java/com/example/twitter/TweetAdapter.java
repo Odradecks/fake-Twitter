@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
@@ -87,13 +88,18 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
 
         // 设置推文内容
         holder.tweetContent.setText(tweet.getContent());  // 填充推文内容
+        Log.d("test", "test");
 
         // 设置推文图片（可选）
         if (tweet.getImageUrl() != null && !tweet.getImageUrl().isEmpty()) {
-            holder.tweetImage.setVisibility(View.VISIBLE);
-            Picasso.get().load(tweet.getImageUrl()).into(holder.tweetImage);
+            Log.d("Tweet id", tweet_id);
+            Log.d("image_url", tweet.getImageUrl());
+            holder.tweetImageView.setVisibility(View.VISIBLE);
+            Glide.with(context)
+                    .load(tweet.getImageUrl())
+                    .into(holder.tweetImageView);
         } else {
-            holder.tweetImage.setVisibility(View.GONE);
+            holder.tweetImageView.setVisibility(View.GONE); // 如果没有图片，隐藏 ImageView
         }
 
         // 设置评论、转发、点赞、浏览计数
@@ -180,7 +186,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
 
 
 
-    public static class TweetViewHolder extends RecyclerView.ViewHolder {  // 一个ViewHolder类，用来存储每一项推文中的控件引用，避免每次绑定时都进行查找
+    public static class TweetViewHolder extends RecyclerView.ViewHolder {
+        public ImageView tweetImageView = itemView.findViewById(R.id.tweetImage);  // 一个ViewHolder类，用来存储每一项推文中的控件引用，避免每次绑定时都进行查找
         ImageView userAvatar, tweetImage, commentIcon, retweetIcon, likeIcon, viewIcon, saveIcon, shareIcon;  // 定义控件
         TextView userName, userEmail, tweetTime, tweetContent, commentCounter, retweetCounter, likeCounter, viewCounter;
 

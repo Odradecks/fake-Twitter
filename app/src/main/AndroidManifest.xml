@@ -31,12 +31,22 @@
         <activity android:name=".CreateAccountActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".NextActivity" />
+        <activity android:name=".VerifyEmailActivity" />
+        <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".SetPasswordActivity" />
+        <activity android:name=".EditProfileActivity" />
         <activity android:name=".HomeActivity"
             tools:ignore="Instantiatable" />
         <activity android:name=".CreateTweetActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ProfileActivity" />
     </application>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+
 
 </manifest>

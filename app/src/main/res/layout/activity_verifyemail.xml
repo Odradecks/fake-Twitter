@@ -1,10 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".LoginActivity">
+    android:padding="16dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -37,22 +35,40 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/titleText"
+        android:id="@+id/verifyEmailTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="To get started, first enter your phone, email, or @username"
+        android:text="Verify your E-mail"
         android:paddingBottom="16dp"
         android:textSize="22sp"
         android:textStyle="bold"/>
 
+    <TextView
+        android:id="@+id/emailText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="We've sent a verification code to your mailbox"
+        android:paddingBottom="16dp"
+        android:textSize="16sp"
+        android:textColor="#555555"/>
+
     <EditText
-        android:id="@+id/inputField"
+        android:id="@+id/emailInputField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Phone, email, or username"
-        android:inputType="text"
+        android:hint="Your E-mail"
+        android:inputType="textEmailAddress"
+        android:background="#E0E0E0"
+        android:enabled="false"
         android:minHeight="48dp" />
 
+    <EditText
+        android:id="@+id/verificationCodeInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter the code"
+        android:inputType="text"
+        android:minHeight="48dp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/nextButton"
@@ -62,15 +78,5 @@
         android:layout_marginTop="16dp"
         android:backgroundTint="#000000"
         android:textColor="#FFFFFF" />
-
-
-    <TextView
-        android:id="@+id/forgotPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Forgot password?"
-        android:paddingTop="16dp" />
-
-
 
 </LinearLayout>

@@ -1,20 +1,29 @@
 package com.example.twitter;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.PropertyName;
 
 public class Tweet {
+    @PropertyName("tweet_id")
     private String tweet_id;
     private String content;
+    @PropertyName("image_url")
     private String image_url;
+    @PropertyName("UID")
     private String UID;
     private com.google.firebase.Timestamp timestamp;
     private String username;
     private String email;
+    @PropertyName("avatar_url")
     private String avatar_url;
-    private Long comment_count;
-    private Long retweet_count;
-    private Long like_count;
-    private Long view_count;
+    @PropertyName("comment_count")
+    private Long comment_count = 0L;
+    @PropertyName("retweet_count")
+    private Long retweet_count = 0L;
+    @PropertyName("like_count")
+    private Long like_count = 0L;
+    @PropertyName("view_count")
+    private Long view_count = 0L;
 
     private boolean isLiked;
     private boolean isRetweeted;
@@ -29,6 +38,7 @@ public class Tweet {
         this.tweet_id = tweet_id;
         this.content = content;
         this.image_url = image_url;
+
         this.UID = UID;
         this.timestamp = timestamp;
         this.username = username;
@@ -50,18 +60,22 @@ public class Tweet {
 
 
     // Getter and Setter methods for each field
+    @PropertyName("tweet_id")
     public String getTweetId() {
         return tweet_id;
     }
 
+    @PropertyName("tweet_id")
     public void setTweetId(String tweet_id) {
         this.tweet_id = tweet_id;
     }
 
+    @PropertyName("UID")
     public String getUID() {
         return UID;
     }
 
+    @PropertyName("UID")
     public void setUID(String UID) {
         this.UID = UID;
     }
@@ -73,10 +87,12 @@ public class Tweet {
         this.content = content;
     }
 
+    @PropertyName("image_url")
     public String getImageUrl() {
         return image_url;
     }
 
+    @PropertyName("image_url")
     public void setImageUrl(String image_url) {
         this.image_url = image_url;
     }
@@ -105,42 +121,44 @@ public class Tweet {
         this.email = email;
     }
 
+    @PropertyName("avatar_url")
     public String getAvatarUrl() {
         return avatar_url;
     }
-
+    @PropertyName("avatar_url")
     public void setAvatarUrl(String avatar_url) {
         this.avatar_url = avatar_url;
     }
 
+    @PropertyName("comment_count")
     public Long getCommentCount() {
         return comment_count;
     }
-
+    @PropertyName("comment_count")
     public void setCommentCount(Long comment_count) {
         this.comment_count = comment_count;
     }
-
+    @PropertyName("retweet_count")
     public Long getRetweetCount() {
         return retweet_count;
     }
-
+    @PropertyName("retweet_count")
     public void setRetweetCount(Long retweet_count) {
         this.retweet_count = retweet_count;
     }
-
+    @PropertyName("like_count")
     public Long getLikeCount() {
         return like_count;
     }
-
+    @PropertyName("like_count")
     public void setLikeCount(Long like_count) {
         this.like_count = like_count;
     }
-
+    @PropertyName("view_count")
     public Long getViewCount() {
         return view_count;
     }
-
+    @PropertyName("view_count")
     public void setViewCount(Long view_count) {
         this.view_count = view_count;
     }

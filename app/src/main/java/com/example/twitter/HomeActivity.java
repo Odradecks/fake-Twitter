@@ -97,17 +97,6 @@ public class HomeActivity extends AppCompatActivity {
         });
 
     }
-
-    /*@Override
-    protected void onResume() {
-        super.onResume();
-
-        // 切换回"For you" Tab时重新加载推文
-        tweetList.clear();
-        tweetList.addAll(fetchTweetsFromDatabase());
-        tweetAdapter.notifyDataSetChanged();
-    }*/
-
     private void fetchUserAvatar() {
         // 获取当前用户信息
         FirebaseUser user = auth.getCurrentUser();
@@ -209,6 +198,7 @@ public class HomeActivity extends AppCompatActivity {
                 .addOnSuccessListener(tweetDoc -> {
                     String content = tweetDoc.getString("content");
                     String image_url = tweetDoc.getString("image_url");
+                    Log.d("HomeActivity", "image_url" + image_url);
                     String UID = tweetDoc.getString("UID");
 
                     com.google.firebase.Timestamp timestamp = tweetDoc.getTimestamp("timestamp");
