@@ -2,6 +2,7 @@ package com.example.twitter;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,6 +51,9 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        Button btnLogout = findViewById(R.id.btnLogout);
+
+
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         tweetAdapter = new TweetAdapter(this, tweetList);
@@ -80,6 +84,22 @@ public class HomeActivity extends AppCompatActivity {
         forYouIndicator.setVisibility(View.VISIBLE);
         followingIndicator.setVisibility(View.INVISIBLE);
 
+        btnLogout.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            // 退出登录时更新状态
+            SharedPreferences sharedPreferences = getSharedPreferences("status", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("isLoggedIn", false);  // 设置为未登录状态
+            editor.apply();
+            Toast.makeText(HomeActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+
+            // 跳转回登录界面
+            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
+
         forYouTab.setOnClickListener(v -> {
             // 切换到 "For You" tab
             switchTab(true);
@@ -96,6 +116,12 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        moveTaskToBack(true); // 将任务移到后台而不是销毁
     }
     private void fetchUserAvatar() {
         // 获取当前用户信息
@@ -284,14 +310,5 @@ public class HomeActivity extends AppCompatActivity {
                     // 最后一次性刷新 RecyclerView
                     tweetAdapter.notifyDataSetChanged();
                 });
-    }
-
-    public void onAvatarClick(String clickedUID) {
-        // 在这里处理头像点击事件，例如跳转到用户详情页
-        Log.d("AvatarClick", "Clicked UID: " + clickedUID);
-        // 你可以根据点击的 UID 做相应的操作，比如跳转到用户主页
-        Intent intent = new Intent(this, ProfileActivity.class);
-        intent.putExtra("UID", clickedUID);
-        startActivity(intent);
     }
 }

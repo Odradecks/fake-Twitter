@@ -2,6 +2,7 @@ package com.example.twitter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,11 +62,13 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
 
         holder.itemView.setTag(tweet.getTweetId());
         holder.itemView.setOnClickListener(v -> {
-            String tweetId = (String) v.getTag();
+            String tweetId = tweet.getTweetId();  // 获取当前推文的 ID
             Log.d("TweetClick", "Clicked Tweet ID: " + tweetId);
 
-            // TODO: 执行具体操作，跳转到推文详情页
-            // openTweetDetails(tweetId);
+            // 跳转到 TweetDetailActivity 并传递 tweet_id
+            Intent intent = new Intent(context, TweetDetailActivity.class);
+            intent.putExtra("tweet_id", tweetId); // 使用键 "tweet_id" 传递数据
+            context.startActivity(intent); // 启动 TweetDetailActivity
         });
 
         String tweet_id = tweet.getTweetId();

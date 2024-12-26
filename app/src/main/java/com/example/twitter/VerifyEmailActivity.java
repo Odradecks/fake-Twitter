@@ -74,7 +74,7 @@ public class VerifyEmailActivity extends AppCompatActivity {
 
         // 邮件发送的配置
         String fromEmail = "shu1993669100@gmail.com";  // 发件人邮箱（你需要使用真实的邮箱地址）
-        String fromPassword = "crtu lxii nufk wibh";  // 发件人邮箱的密码
+        String fromPassword = "";  // 发件人邮箱的密码
         String smtpHost = "smtp.gmail.com";  // 使用 Gmail SMTP 服务器
 
         Properties properties = new Properties();

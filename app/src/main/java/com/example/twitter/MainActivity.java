@@ -23,11 +23,13 @@ public class MainActivity extends AppCompatActivity {
         // 获取 SharedPreferences 中保存的登录状态
         SharedPreferences sharedPreferences = getSharedPreferences("status", MODE_PRIVATE);
         boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
+        String userId = sharedPreferences.getString("userId", null);  // 获取用户的 UID
 
         Intent intent;
         if (isLoggedIn) {
             // 如果已登录，跳转到主页
             intent = new Intent(MainActivity.this, HomeActivity.class);
+            intent.putExtra("userId", userId);
             startActivity(intent);
             finish();
         } else {

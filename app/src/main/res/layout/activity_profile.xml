@@ -86,7 +86,7 @@
                         android:id="@+id/following_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2K Following"
+                        android:text="3 Following"
                         android:textSize="14sp"
                         android:textColor="#000000"
                         android:layout_marginEnd="16dp" />
@@ -95,7 +95,7 @@
                         android:id="@+id/followers_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="36 Followers"
+                        android:text="1 Followers"
                         android:textSize="14sp"
                         android:textColor="#000000" />
                 </LinearLayout>

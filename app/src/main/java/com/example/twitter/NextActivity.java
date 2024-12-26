@@ -2,6 +2,7 @@ package com.example.twitter;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.MotionEvent;
@@ -84,6 +85,12 @@ public class NextActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
                         Toast.makeText(NextActivity.this, "Log in successfully.", Toast.LENGTH_SHORT).show();
+                        SharedPreferences sharedPreferences = getSharedPreferences("status", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean("isLoggedIn", true);  // 设置已登录状态
+                        editor.putString("userId", user.getUid());  // 保存用户的 UID
+                        editor.putString("userEmail", user.getEmail());
+                        editor.apply();
                         goToHomepage();
                     } else {
                         Toast.makeText(NextActivity.this, "Wrong email or password.", Toast.LENGTH_SHORT).show();

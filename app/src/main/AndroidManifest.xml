@@ -40,6 +40,7 @@
         <activity android:name=".CreateTweetActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ProfileActivity" />
+        <activity android:name=".TweetDetailActivity" />
     </application>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />

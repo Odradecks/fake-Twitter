@@ -25,8 +25,8 @@ public class OSSService {
     private OSS ossClient;
     private String bucketName = "odradek"; // 替换为你的OSS存储桶名称
     private String endpoint = "https://oss-cn-hangzhou.aliyuncs.com"; // 替换为你的OSS区域Endpoint
-    private String accessKeyId;
-    private String accessKeySecret;
+    private String accessKeyId = "";
+    private String accessKeySecret = "";
 
     /**
      * 加载 Access Key 和 Secret Key
