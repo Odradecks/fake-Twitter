@@ -14,3 +14,4 @@
 .cxx
 local.properties
 /Users/gwynplaine/AndroidStudioProjects/Twitter/app/src/androidTest/assets/configuration.properties
+app/src/androidTest/assets/config.properties
